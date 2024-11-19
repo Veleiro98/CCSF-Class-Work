@@ -10,6 +10,4 @@ public class classNotes {
   /* "stack vs heap" 
    *  when an object doesn't have static and a data type or void return, its an object definition
    * for example
-  *
-
-  
+  */

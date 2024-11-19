@@ -9,8 +9,8 @@
    A SUBCLASS OF Employee.
 */
 
-import java.util.Scanner;
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.Scanner; 
 
 class Main
 {
@@ -86,7 +86,10 @@ class Main
 
     System.out.println("Here are all the people:");
     for(Person p : people)
+    {
+      System.out.print("\n");
       p.output();
+    }
   }
 }
 
