@@ -1,136 +1,62 @@
-/* Craig Persiko - EmployeeHierarchyExpansion
-   CS 111B Exercise for Chapter 14 test program.
-   Uses Person, Employee, SalariedEmployee, and 
-   new HourlyEmployee classes to demonstrate polymorphism.
+/* Main class to test Schedule class
+   for CS 111B Assignment 9 by Craig Persiko
 
-   YOUR JOB IS TO WRITE HourlyEmployee CLASS TO MAKE
-   THIS PROGRAM WORK, TO PRODUCE THE SAMPLE OUTPUT
-   AT BOTTOM.  YOUR HourlyEmployee CLASS MUST BE
-   A SUBCLASS OF Employee.
+   This tests the Schedule class, which is used to store
+   an ArrayList of Time objects, and to sort them.
+
+   YOUR JOB IS TO WRITE THE Schedule.java FILE to work
+   with Time.java so that the following program produces
+   output like shown below.
+   Make sure to write your Selection Sort algorithm 
+   using the Time object's .compareTo method. 
+   You can copy my code from class examples and solutions,
+   and then change it to fit your program.
+
+   DO NOT CHANGE THIS FILE.
 */
-
-import java.util.ArrayList;
-import java.util.Scanner; 
 
 class Main
 {
-  public static void main(String[] args)
+  public static void main(String args[])
   {
-    Scanner scan = new Scanner(System.in);
-    int i;
-    String input = "starting"; // initialize so loop condition below is true
-
-    ArrayList<Person> people = new ArrayList<Person>();
-
-    System.out.println("This program allows you to enter info about people.");
-
-    // a for-loop can have any condition you want:
-    // in this case, count with i, but repeat until user enters 'q'
-    for(i = 0; input.charAt(0) != 'q'; i++)
-    {
-      System.out.print("Is person #" + (i + 1) + " an employee? (Enter 'y' for Yes, 'n' for No, or 'q' to stop entering employees) ");
-      input = scan.nextLine();
-      if (input.charAt(0) == 'y') // Employee:
-      {
-        System.out.print("Is this person on salary, hourly, or neither? (Enter 's', 'h', or 'n') ");
-        input = scan.nextLine();
-        if (input.charAt(0) == 's')
-        { // SalariedEmployee object
-          people.add(new SalariedEmployee());
-        }
-        else if (input.charAt(0) == 'h')
-        {  // HourlyEmployee
-          people.add(new HourlyEmployee());
-        }
-        else
-        { // Employee object
-          people.add(new Employee());
-        }
-      }
-      else if (input.charAt(0) == 'n')
-      { // Person object
-        people.add(new Person());
-      }
-      else // neither 'y' nor 'n': no Person. Maybe quit?
-        continue; // skip the rest of the loop body
-
-      // input this person's data. Because of polymorphism,
-      // the appropriate input function will be called
-      // (not necessarily the one defined in the Person class)
-      people.get(i).input();
-
-      // this function is defined in the Person class only, 
-      // but it works for all because of inheritance:
-      people.get(i).sayGoodMorning();
-
-      if(people.get(i) instanceof SalariedEmployee)  // if this is a SalariedEmployee
-      {
-        System.out.println("Your salary is $"
-                           + ((SalariedEmployee)people.get(i)).monthsPay()
-                           + " per month.");
-      }
-      else if(people.get(i) instanceof HourlyEmployee)  // if this is an HourlyEmployee
-      {
-        // Save a reference to the object, for easier coding:
-        HourlyEmployee he = (HourlyEmployee)people.get(i);
-        System.out.println("Your weekly pay is $"
-                           + he.weeksPay());
-        double hoursEntered = he.getHoursPerWeek();
-        he.setHoursPerWeek(40);
-        System.out.println("If you worked 40 hours per week, your weekly pay would be $"
-                           + he.weeksPay());        
-        // return to original valued entered by user:
-        he.setHoursPerWeek(hoursEntered);
-      }
-    } // end of for loop
-
-    System.out.println("Here are all the people:");
-    for(Person p : people)
-    {
-      System.out.print("\n");
-      p.output();
-    }
+    Schedule MondaySchedule = new Schedule();
+    // above constructor asks user to enter meeting times
+    MondaySchedule.sort();
+    System.out.println("Here is your schedule, sorted in order:");
+    System.out.print(MondaySchedule);
   }
 }
 
 /* Sample Output:
 
-This program allows you to enter info about people.
-Is person #1 an employee? (Enter 'y' for Yes, 'n' for No, or 'q' to stop entering employees) y
-Is this person on salary, hourly, or neither? (Enter 's', 'h', or 'n') h
-Please enter first name: Ed
-Please enter last name: Sheeran
-Please enter Social Security Number: 123-45-6789
-Please enter hourly rate: $100
-Please enter expected hours to work each week: 30
-Good morning, Ed Sheeran
-Your weekly pay is $3000.0
-If you worked 40 hours per week, your weekly pay would be $4000.0
-Is person #2 an employee? (Enter 'y' for Yes, 'n' for No, or 'q' to stop entering employees) y
-Is this person on salary, hourly, or neither? (Enter 's', 'h', or 'n') s
-Please enter first name: John
-Please enter last name: Legend
-Please enter Social Security Number: 111-11-1111
-Please enter salary: 1000000
-Good morning, John Legend
-Your salary is $83333.33333333333 per month.
-Is person #3 an employee? (Enter 'y' for Yes, 'n' for No, or 'q' to stop entering employees) y
-Is this person on salary, hourly, or neither? (Enter 's', 'h', or 'n') n
-Please enter first name: Ray
-Please enter last name: LaMontagne
-Please enter Social Security Number: 222-22-2222
-Good morning, Ray LaMontagne
-Is person #4 an employee? (Enter 'y' for Yes, 'n' for No, or 'q' to stop entering employees) n
-Please enter first name: Bruno   
-Please enter last name: Mars
-Good morning, Bruno Mars
-Is person #5 an employee? (Enter 'y' for Yes, 'n' for No, or 'q' to stop entering employees) q
-Here are all the people:
-1       Ed      Sheeran     123-45-6789
-currently working 30.0 hours per week
-2       John        Legend      111-11-1111
-3       Ray     LaMontagne      222-22-2222
-4       Bruno       Mars
+Please enter the time for each meeting in hh:mm format, on a
+separate line, and type 'end' on the final line to finish.
+16:00
+16:50
+9:00
+10:00
+15:00
+end
+Here is your schedule, sorted in order:
+09:00
+10:00
+15:00
+16:00
+16:50
 
+-----------------------------------------
+
+Please enter the time for each meeting in hh:mm format, on a
+separate line, and type 'end' on the final line to finish.
+17:00
+15:00
+13:00
+11:00
+end
+Here is your schedule, sorted in order:
+11:00
+13:00
+15:00
+17:00
 
 */
