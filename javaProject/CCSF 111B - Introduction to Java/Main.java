@@ -1,62 +1,52 @@
-/* Main class to test Schedule class
-   for CS 111B Assignment 9 by Craig Persiko
+/* Craig Persiko - CS 111B
+   Test program for Assignment 10 ShapeHierarchy.
+   Uses Shape, Circle, Rectangle, and Square.
 
-   This tests the Schedule class, which is used to store
-   an ArrayList of Time objects, and to sort them.
+   YOUR JOB IS TO WRITE THE Circle, Rectangle, 
+   and Square CLASSES SO THIS PROGRAM
+   PRODUCES THE OUTPUT SHOWN AT BOTTOM.
 
-   YOUR JOB IS TO WRITE THE Schedule.java FILE to work
-   with Time.java so that the following program produces
-   output like shown below.
-   Make sure to write your Selection Sort algorithm 
-   using the Time object's .compareTo method. 
-   You can copy my code from class examples and solutions,
-   and then change it to fit your program.
-
-   DO NOT CHANGE THIS FILE.
+   DO NOT CHANGE THIS FILE
 */
 
 class Main
 {
-  public static void main(String args[])
+  public static void main(String[] args)
   {
-    Schedule MondaySchedule = new Schedule();
-    // above constructor asks user to enter meeting times
-    MondaySchedule.sort();
-    System.out.println("Here is your schedule, sorted in order:");
-    System.out.print(MondaySchedule);
+    // Array to store all types of Shape objects:
+    Shape[] shapes = new Shape[4];
+    // Parallel array to store text descriptions of each shape.
+    String[] descriptions = new String[4];
+
+    shapes[0] = new Circle(10);
+    descriptions[0] = "10 unit radius Circle";
+    shapes[1] = new Rectangle(15, 25);
+    descriptions[1] = "15x25 Rectangle";
+    shapes[2] = new Square(20);
+    descriptions[2] = "20 unit Square";
+    shapes[3] = new Circle(2);
+    descriptions[3] = "2 unit radius Circle";    
+
+    System.out.println("This program examines the ratio of area to perimeter");
+    System.out.println("for a few different shapes.");
+    System.out.println("(The larger the ratio, the greater the efficiency of space contained)");
+    for(int i=0; i<shapes.length && i<descriptions.length; i++)
+    {
+      System.out.println("Shape #" + shapes[i].getId() 
+                         + " is a " + descriptions[i] + " with ratio "
+                         + shapes[i].area() / shapes[i].perimeter());
+    }
   }
 }
 
-/* Sample Output:
+/* Output:
 
-Please enter the time for each meeting in hh:mm format, on a
-separate line, and type 'end' on the final line to finish.
-16:00
-16:50
-9:00
-10:00
-15:00
-end
-Here is your schedule, sorted in order:
-09:00
-10:00
-15:00
-16:00
-16:50
-
------------------------------------------
-
-Please enter the time for each meeting in hh:mm format, on a
-separate line, and type 'end' on the final line to finish.
-17:00
-15:00
-13:00
-11:00
-end
-Here is your schedule, sorted in order:
-11:00
-13:00
-15:00
-17:00
+This program examines the ratio of area to perimeter
+for a few different shapes.
+(The larger the ratio, the greater the efficiency of space contained)
+Shape #1 is a 10 unit radius Circle with ratio 5.0
+Shape #2 is a 15x25 Rectangle with ratio 4.6875
+Shape #3 is a 20 unit Square with ratio 5.0
+Shape #4 is a 2 unit radius Circle with ratio 1.0
 
 */
