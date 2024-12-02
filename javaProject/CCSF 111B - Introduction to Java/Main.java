@@ -1,52 +1,61 @@
-/* Craig Persiko - CS 111B
-   Test program for Assignment 10 ShapeHierarchy.
-   Uses Shape, Circle, Rectangle, and Square.
+/* Exercise for Chapter 16 in CS 111B - Craig Persiko
+   Main class to test Vehicle hierarchy with
+   abstract class and interface. (Part of starter code.)
 
-   YOUR JOB IS TO WRITE THE Circle, Rectangle, 
-   and Square CLASSES SO THIS PROGRAM
-   PRODUCES THE OUTPUT SHOWN AT BOTTOM.
+   Your job is to write ElectricCar.java, Motorboat.java,
+   and Sailboat.java so that this program produces the
+   sample output shown at bottom.
 
-   DO NOT CHANGE THIS FILE
+   DO NOT CHANGE THIS CODE
 */
 
-class Main
+class Main 
 {
-  public static void main(String[] args)
+  public static void main(String[] args) 
   {
-    // Array to store all types of Shape objects:
-    Shape[] shapes = new Shape[4];
-    // Parallel array to store text descriptions of each shape.
-    String[] descriptions = new String[4];
+    Vehicle[] vehicles = new Vehicle[3];
+    
+    vehicles[0] = new ElectricCar("Tesla", "Model 3", 262); 
+    // 262 mile range
+    vehicles[1] = new Motorboat("Starweld", "16 Fusion DC", 45);
+    // 45 mile range
+    vehicles[2] = new Sailboat("Gulf Marine", "Gulf 32");
+    // sailboats have unlimited range
 
-    shapes[0] = new Circle(10);
-    descriptions[0] = "10 unit radius Circle";
-    shapes[1] = new Rectangle(15, 25);
-    descriptions[1] = "15x25 Rectangle";
-    shapes[2] = new Square(20);
-    descriptions[2] = "20 unit Square";
-    shapes[3] = new Circle(2);
-    descriptions[3] = "2 unit radius Circle";    
-
-    System.out.println("This program examines the ratio of area to perimeter");
-    System.out.println("for a few different shapes.");
-    System.out.println("(The larger the ratio, the greater the efficiency of space contained)");
-    for(int i=0; i<shapes.length && i<descriptions.length; i++)
+    for(Vehicle v : vehicles)
     {
-      System.out.println("Shape #" + shapes[i].getId() 
-                         + " is a " + descriptions[i] + " with ratio "
-                         + shapes[i].area() / shapes[i].perimeter());
+      goDistanceTest(v, 20);
+      goDistanceTest(v, 40);
+      System.out.println();
+    }
+  }
+
+  // Test v to see if it can go distance, and output results.
+  static void goDistanceTest(Vehicle v, int distance)
+  {
+    System.out.print("Going " + distance + " miles: ");
+    if (!v.travel(distance))
+      System.out.println("Can't make it.");
+    else if(v instanceof LimitedRange)
+    {
+      System.out.println("I can go " + ((LimitedRange)v).getCurrentRange() + " miles farther.");
     }
   }
 }
 
-/* Output:
+/* Sample Output that you should get after you write
+   ElectricCar.java, Motorboat.java, and Sailboat.java:
 
-This program examines the ratio of area to perimeter
-for a few different shapes.
-(The larger the ratio, the greater the efficiency of space contained)
-Shape #1 is a 10 unit radius Circle with ratio 5.0
-Shape #2 is a 15x25 Rectangle with ratio 4.6875
-Shape #3 is a 20 unit Square with ratio 5.0
-Shape #4 is a 2 unit radius Circle with ratio 1.0
+Going 20 miles: Zoom!
+I can go 242 miles farther.
+Going 40 miles: Zoom!
+I can go 202 miles farther.
+
+Going 20 miles: Wisshhh!
+I can go 25 miles farther.
+Going 40 miles: Can't make it.
+
+Going 20 miles: Weee!
+Going 40 miles: Weee!
 
 */
