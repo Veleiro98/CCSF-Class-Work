@@ -1,61 +1,542 @@
-/* Exercise for Chapter 16 in CS 111B - Craig Persiko
-   Main class to test Vehicle hierarchy with
-   abstract class and interface. (Part of starter code.)
-
-   Your job is to write ElectricCar.java, Motorboat.java,
-   and Sailboat.java so that this program produces the
-   sample output shown at bottom.
-
-   DO NOT CHANGE THIS CODE
+/* Craig Persiko
+   TicTacToe project for Assignment 11 in CS 111B
 */
 
 class Main 
 {
-  public static void main(String[] args) 
+  ///////  main  ////////
+  // No changes needed in this function.
+  // It declares the variables, initializes the game,
+  // and plays until someone wins or the game becomes unwinnable.
+  public static void main(String[] args)
   {
-    Vehicle[] vehicles = new Vehicle[3];
-    
-    vehicles[0] = new ElectricCar("Tesla", "Model 3", 262); 
-    // 262 mile range
-    vehicles[1] = new Motorboat("Starweld", "16 Fusion DC", 45);
-    // 45 mile range
-    vehicles[2] = new Sailboat("Gulf Marine", "Gulf 32");
-    // sailboats have unlimited range
-
-    for(Vehicle v : vehicles)
-    {
-      goDistanceTest(v, 20);
-      goDistanceTest(v, 40);
-      System.out.println();
-    }
-  }
-
-  // Test v to see if it can go distance, and output results.
-  static void goDistanceTest(Vehicle v, int distance)
-  {
-    System.out.print("Going " + distance + " miles: ");
-    if (!v.travel(distance))
-      System.out.println("Can't make it.");
-    else if(v instanceof LimitedRange)
-    {
-      System.out.println("I can go " + ((LimitedRange)v).getCurrentRange() + " miles farther.");
-    }
+    TicTacBoard game = new TicTacBoard(3);
+    game.playGame();
   }
 }
 
-/* Sample Output that you should get after you write
-   ElectricCar.java, Motorboat.java, and Sailboat.java:
+/* Sample Output:
 
-Going 20 miles: Zoom!
-I can go 242 miles farther.
-Going 40 miles: Zoom!
-I can go 202 miles farther.
+ | | 
+-----
+ | | 
+-----
+ | | 
 
-Going 20 miles: Wisshhh!
-I can go 25 miles farther.
-Going 40 miles: Can't make it.
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 0
 
-Going 20 miles: Weee!
-Going 40 miles: Weee!
+X| | 
+-----
+ | | 
+-----
+ | | 
 
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 0
+
+X| | 
+-----
+ | | 
+-----
+O| | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 1
+
+X| | 
+-----
+ |X| 
+-----
+O| | 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 1
+
+X| | 
+-----
+ |X| 
+-----
+O|O| 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 2
+
+X| | 
+-----
+ |X| 
+-----
+O|O|X
+
+Player X wins!
+
+************************************************
+*********** Running the program again **********
+************************************************
+
+ | | 
+-----
+ | | 
+-----
+ | | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 0
+
+X| | 
+-----
+ | | 
+-----
+ | | 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 1
+
+X|O| 
+-----
+ | | 
+-----
+ | | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 2
+
+X|O|X
+-----
+ | | 
+-----
+ | | 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 1
+
+X|O|X
+-----
+ |O| 
+-----
+ | | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 1
+
+X|O|X
+-----
+ |O| 
+-----
+ |X| 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 0
+
+X|O|X
+-----
+O|O| 
+-----
+ |X| 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 2
+
+X|O|X
+-----
+O|O|X
+-----
+ |X| 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 2
+
+X|O|X
+-----
+O|O|X
+-----
+ |X|O
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 0
+
+X|O|X
+-----
+O|O|X
+-----
+X|X|O
+
+Nobody won. Game ends in a draw.
+
+************************************************
+*********** Running the program again **********
+************************************************
+
+ | | 
+-----
+ | | 
+-----
+ | | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+-1 1
+Invalid entry: row and column must both be between 0 and 2 (inclusive).
+Please try again.
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 3
+Invalid entry: row and column must both be between 0 and 2 (inclusive).
+Please try again.
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 1
+
+ | | 
+-----
+ |X| 
+-----
+ | | 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 1
+Invalid entry: Row 1 at Column 1 already contains: X
+Please try again.
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 0
+
+ | | 
+-----
+ |X| 
+-----
+O| | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 0
+
+X| | 
+-----
+ |X| 
+-----
+O| | 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 2
+
+X| | 
+-----
+ |X| 
+-----
+O| |O
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 2
+
+X| |X
+-----
+ |X| 
+-----
+O| |O
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 1
+
+X| |X
+-----
+ |X| 
+-----
+O|O|O
+
+Player O wins!
+
+************************************************
+*********** Running the program again **********
+************************************************
+
+ | | 
+-----
+ | | 
+-----
+ | | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 2
+
+ | | 
+-----
+ | | 
+-----
+ | |X
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 0
+
+O| | 
+-----
+ | | 
+-----
+ | |X
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 2
+
+O| |X
+-----
+ | | 
+-----
+ | |X
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 1
+
+O| |X
+-----
+ |O| 
+-----
+ | |X
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 2
+
+O| |X
+-----
+ |O|X
+-----
+ | |X
+
+Player X wins!
+
+************************************************
+*********** Running the program again **********
+************************************************
+* Following is Extra Credit: determine if unwinnable *
+*************************************************
+
+ | | 
+-----
+ | | 
+-----
+ | | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 0
+
+X| | 
+-----
+ | | 
+-----
+ | | 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 0
+
+X| | 
+-----
+ | | 
+-----
+O| | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 2
+
+X| |X
+-----
+ | | 
+-----
+O| | 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 1
+
+X|O|X
+-----
+ | | 
+-----
+O| | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 2
+
+X|O|X
+-----
+ | | 
+-----
+O| |X
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 1
+
+X|O|X
+-----
+ |O| 
+-----
+O| |X
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 1
+
+X|O|X
+-----
+ |O| 
+-----
+O|X|X
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 2
+
+X|O|X
+-----
+ |O|O
+-----
+O|X|X
+
+Nobody can win now. Game ends in a draw.
+
+************************************************
+*********** Running the program again **********
+************************************************
+* Above and below examples are Extra Credit: determine if unwinnable *
+*************************************************
+
+ | | 
+-----
+ | | 
+-----
+ | | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 0
+
+X| | 
+-----
+ | | 
+-----
+ | | 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 1
+
+X|O| 
+-----
+ | | 
+-----
+ | | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 2
+
+X|O|X
+-----
+ | | 
+-----
+ | | 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 0
+
+X|O|X
+-----
+ | | 
+-----
+O| | 
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 1
+
+X|O|X
+-----
+ | | 
+-----
+O|X| 
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 2
+
+X|O|X
+-----
+ | | 
+-----
+O|X|O
+
+Nobody can win now. Game ends in a draw.
+
+************************************************
+* Above 2 examples are Extra Credit: determine if unwinnable *
+*************************************************
 */
