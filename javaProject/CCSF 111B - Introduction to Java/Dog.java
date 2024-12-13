@@ -1,9 +1,4 @@
-/*
- * 
- * 
- */
-
-class Dog extends ANimal implements Talker
+class Dog extends Animal implements Talker
 {
     public Dog()
     {
@@ -15,8 +10,9 @@ class Dog extends ANimal implements Talker
         super(name);
     }
 
-    @Overridepublic void speak()
+    @Override
+    public void speak()
     {
-        System.out.print("Woof")
+        System.out.print("Woof");
     }
 } // end of class 
