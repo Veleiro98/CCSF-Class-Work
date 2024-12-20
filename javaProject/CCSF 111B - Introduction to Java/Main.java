@@ -1,127 +1,68 @@
-/* Starter project for Assignment 14 File I/O for Grade Average
-   CS 111B, Craig Persiko's class.  
-   
-   Your job is to write a program to read the grades.txt file
-   in this project, to produce output like shown here.
+/* Mayors Names
 
-   "grades.txt" is the file your program should read.
-   "badformat.txt" is an example of a file that your program can't read, 
-   so a clear error message should be generated, as shown in the sample output.
+  See instructions in Canvas
 */
+
 import java.io.*;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-import java.nio.file.*;
+import java.util.*;
 
-class Main
+class Main 
 {
-  private static final int NUM_SCORES = 4;
-  // named constant for the number of scores per student in file
-
   public static void main(String[] args)
   {
-    System.out.println("Welcome to the grade average calculator program!");
-    System.out.print("Please enter the name of your file (txt format): ");
-    Scanner userScan = new Scanner(System.in);
-    String inputFileName = null;
-    String outputFileName = null;
-    boolean lineNeeded = true;
-    String[][] inputFile = null;
-    while(lineNeeded)
-    {
-      try
-       {
-         inputFileName = userScan.nextLine();
-         lineNeeded = false;
-       }
-       catch(Exception e)
-        {
-          System.out.println("Unexpected input. Please try again.");
-       }
-    } // end of while loop
+    Scanner inFile = null, keyboard;
+    String first, middle, last;
+    ArrayList<FullName> mayorList = new ArrayList<FullName>();
+    keyboard = new Scanner(System.in);
 
+    System.out.println("We have a new mayor:");
+    System.out.println("Please enter first name");
+    first = keyboard.nextLine();
+    System.out.println("Please enter middle name");
+    middle = keyboard.nextLine();
+    System.out.println("Please enter last name");
+    last = keyboard.nextLine();
 
-    //PrintWriter printer = new PrintWriter(new File("inputFile"));
-    boolean fileHealth = false; // assumed bad until proven otherwise
-    fileHealth = checkFilehealth(inputFileName); // handles exceptions internally
-    if(fileHealth == false)
-    {
-      System.out.println("Warning, this file is not of  correct format and may be bad. Ending program now. \n" +
-      " Please correct the file and/or try again.");
-      System.exit(0);
-    }
-    // now that we know that the file is healthy we can continue as normal.
-    // we will start by 
-    long lineCount = 1;
-    try
-    {
-      lineCount = Files.readAllLines(Paths.get("javaProject\\CCSF 111B - Introduction to Java\\" +
-        inputFileName)).size();
-    }
-    catch(Exception e)
-    {
-      System.out.println("Unexpected error handling the file. Ending program.");
-      System.exit(0);
-    }
-    // Below we actually open the file and insert all of its string data into an array.
-    String[][] fileData = new String[(int)lineCount][];
-    try
-    {
-      Scanner fileScanner = new Scanner(new File("javaProject\\CCSF 111B - Introduction to Java\\" +
-      inputFileName));
-      for(int i = 0 ; i < lineCount ; i++)
-      {
-        fileData[i] = fileScanner.nextLine().split(" ");
-      }
-      fileScanner.close();
-    }
-    catch(Exception e)
-    {
-      System.out.println("Unexpected error handling the file. Ending program.");
-      System.exit(0);
-    }
-    /// now we work on creating the output file
-    System.out.print("Please enter the name of the output file you want to create: ");
+    
+    // DO NOT CHANGE ANY OF THE ABOVE CODE.
+
     boolean loopCheck = true;
-    while(loopCheck)
-    {
-      try
-      {
-        outputFileName = userScan.nextLine();
-        File outputFile = new File("javaProject\\CCSF 111B - Introduction to Java\\" + outputFileName);
-        userScan.close();
-      }
-      catch(Exception e)
-      {
-        System.out.println("Unable to create output file. Please remember to put the file type after " +
-        " (such as .txt). Please try again: ");
-      }
-    loopCheck = false;
-    }
-
     try
     {
-      PrintWriter outputWriter = new PrintWriter(new File(outputFileName));
-      for(int i = 0 ; i < lineCount; i++)
+      if(checkFilehealth("Mayors.txt") == false)
       {
-        outputWriter.println(fileData[i][0] + " " + (Integer.parseInt(fileData[i][1]) +
-         Integer.parseInt(fileData[i][2]) +
-         Integer.parseInt(fileData[i][3]) + 
-         Integer.parseInt(fileData[i][4]))/NUM_SCORES);
+        System.out.println("Error reading or writing file: Mayors.txt. This file may not be in the " +
+        "correct format"); // I added a check to see if the file is of the right format
+        System.out.println("Please correct or replace the file and try again. Program ending");
+        System.exit(0);
       }
-      System.out.println("File created successfully. Program ending.");
-      outputWriter.close();
-      
+      mayorList.add(new FullName(first,middle,last));
+      inFile = new Scanner(new File("javaProject\\CCSF 111B - Introduction to Java\\" + "Mayors.txt"));
+      String[] placeHolder = new String[3];
+    
+      while(inFile.hasNextLine())
+      {
+        placeHolder = inFile.nextLine().split(" ");
+        mayorList.add(new FullName(placeHolder[0],placeHolder[1],placeHolder[2]));
+      }
+      inFile.close();
+      keyboard.close();
+
     }
     catch(Exception e)
     {
-      System.out.println("Failed to create new file and write data.");
+      System.out.println("Please try again.");
     }
+    
 
+    // DO NOT CHANGE ANY OF THE BELOW CODE.
+   
 
-
-
-  } // end of main method
+    Collections.sort(mayorList);
+    System.out.println("Here is the list of mayors, sorted by last name:");
+    for(FullName mayorName : mayorList)
+      System.out.println(mayorName);
+  }
 
   private static boolean checkFilehealth(String fileToCheck)
   {
@@ -130,7 +71,7 @@ class Main
     Scanner scan = new Scanner(new File("javaProject\\CCSF 111B - Introduction to Java\\" + fileToCheck));
     while(scan.hasNextLine())
     {
-      if(scan.nextLine().split(" ").length == 5)
+      if(scan.nextLine().split(" ").length == 3)
         {
           //does nothing as this is fine
         }
@@ -145,7 +86,7 @@ class Main
     } // end of try
     catch(IOException e)
     {
-      System.out.println("Exception raised. Please double check the file name and try again.");
+      System.out.println("IOException raised. Please double check the file name and try again.");
       return false;
     }
     catch(Exception e)
@@ -156,40 +97,71 @@ class Main
   }
 }
 
-/* Sample Output 1:
+/*
+ * Sample Outputput 1:
+ * We have a new mayor:
+Please enter first name
+Matthew
+Please enter middle name
+Buchanan 
+Please enter last name
+Means
+Here is the list of mayors, sorted by last name:
+Arthur Christ Agnos
+London Nicole Breed
+Willie Lewis Brown
+Dianne Goldman Feinstein
+Francis Michael Jordan
+Edwin Mah Lee
+Matthew Buchanan Means
+George Richard Moscone
+Gavin Christopher Newsom
 
- Welcome to the grade average calculator program!
-Please enter the name of your file (txt format): grades.txt
-Please enter the name of the output file you want to create: out2.txt
-File created successfully. Program ending.
-
-Sample output 2:
-Welcome to the grade average calculator program!
-Please enter the name of your file (txt format): badFormat.txt
-Warning, this file is not of  correct format and may be bad. Ending program now.
- Please correct the file and/or try again.
-
-grades.txt file contains:
-Biden 85 90 95 98
-Trump 50 70 75 80
-Obama 90 95 98 97
-Bush 80 70 75 85
-Clinton 90 95 85 99
-Bush 85 95 90 94
-
-badFormat.txt file contains:
-Biden 85 90
-Trump 50 70 75 
-Obama 90 95 98 97
-Bush 80 70 75 85
-Clinton 90 95 85 99Bush 85 95 90 94
-
-Here are the average grades produced when done correctly:
-Biden 92
-Trump 68
-Obama 95
-Bush 77
-Clinton 92
-Bush 91
-
+Sample Output 2:
+/* 
+We have a new mayor:
+Please enter first name
+Corrupt
+Please enter middle name
+Politician
+Please enter last name
+Mcgee
+Here is the list of mayors, sorted by last name:
+Arthur Christ Agnos
+London Nicole Breed
+Willie Lewis Brown
+Dianne Goldman Feinstein
+Francis Michael Jordan
+Edwin Mah Lee
+Corrupt Politician Mcgee
+George Richard Moscone
+Gavin Christopher Newsom
 */
+
+/* 
+ * Just for funsies I also incorporated a fileHealthChecker function 
+ * incase if Mayors.txt is in the wrong format much like the I/O
+ * assignment we did.
+ * 
+ * I.E. if Mayors.txt looks like this:
+London Nicole Breed
+Edwin Mah Lee
+Gavin Christopher Newsom
+Willie Lewis Brown
+Francis Michael Jordan
+Arthur Christ Agnos
+Dianne Goldman Feinstein George Richard Moscone
+
+it will output this results:
+We have a new mayor:
+Please enter first name
+Matthew
+Please enter middle name
+Buchanan
+Please enter last name
+Means
+Error reading or writing file: Mayors.txt. This file may not be in the correct format
+Please correct or replace the file and try again. Program ending
+
+I had a great semester with this class. Thank you!
+ */
